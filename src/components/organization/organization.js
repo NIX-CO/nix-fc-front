@@ -6,9 +6,10 @@ function OrganizationList() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get('/organization/api')
-            .then(response => setOrganizations(response.data))
-            .catch(error => setError(error));
+        axios
+            .get('http://127.0.0.1:8000/organization/api/')
+            .then((response) => setOrganizations(response.data))
+            .catch((error) => setError(error));
     }, []);
 
     if (error) {
@@ -17,18 +18,50 @@ function OrganizationList() {
         return <div>Loading...</div>;
     } else {
         return (
-            <div>
-                <h1>Organizations:</h1>
-                <ul>
-                    {organizations.map(organization => (
-                        <li key={organization.id}>
-                            <h2>{organization.name}</h2>
-                            <p>Latitude: {organization.latitude}</p>
-                            <p>Longitude: {organization.longitude}</p>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            <section>
+                <div className="container mt-4">
+                    <hr />
+                    <a href="http://127.0.0.1:8000/organization/create/" className="btn btn-primary mb-2">
+                        Create Organization
+                    </a>
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Image</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {organizations.map((organization) => (
+                                <tr key={organization.id}>
+                                    <td>{organization.name}</td>
+                                    <td>
+                                        <img src={organization.image.url} width="100" height="100" />
+                                    </td>
+                                    <td>
+                                        <a
+                                            href={`http://127.0.0.1:8000/organization/${organization.id}/update/`}
+                                            className="btn btn-primary"
+                                        >
+                                            Edit
+                                        </a>
+                                        <a
+                                            href={`http://127.0.0.1:8000/organization/${organization.id}/delete/`}
+                                            className="btn btn-danger"
+                                            onClick={() =>
+                                                window.confirm('Are you sure you want to delete this organization?')
+                                            }
+                                        >
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         );
     }
 }
