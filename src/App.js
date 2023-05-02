@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
 import OrganizationList from './components/organization/organization';
+import CreateOrganization from './components/organization/create_organization';
+import OrganizationDetails from './components/organization/organization_details';
 import Nav from './components/base/nav';
 import HOME from './components/base/home';
 import { BrowserRouter as Router, Routes, Route, Link, BrowserRouter } from "react-router-dom";
@@ -20,6 +22,8 @@ function App() {
         <Routes>
         <Route path="/" element={<HOME />} />
           <Route path="/organization" element={<OrganizationList />} />
+          <Route path="/organization/create" element={<CreateOrganization />} />
+          <Route path="/organization/:pk" element={<OrganizationDetails />} />
         </Routes>
       </div>
     </BrowserRouter>
