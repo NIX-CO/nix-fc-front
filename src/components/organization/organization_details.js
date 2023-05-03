@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { GoogleMap,useLoadScript,Marker } from '@react-google-maps/api';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
 const OrganizationDetails = () => {
     const [organization, setOrganization] = useState(null);
@@ -15,34 +15,11 @@ const OrganizationDetails = () => {
         fetchOrganization();
     }, [pk]);
 
-    useEffect(() => {
-        // Define a global callback function for the Maps API
-        window.initMap = () => {
-            // Initialize the map only if the organization data has loaded
-            if (organization) {
-                const map = new window.google.maps.Map(document.getElementById('map'), {
-                    center: { lat: organization.latitude, lng: organization.longitude },
-                    zoom: 15,
-                });
-
-                const marker = new window.google.maps.Marker({
-                    position: { lat: organization.latitude, lng: organization.longitude },
-                    map: map,
-                    title: organization.name,
-                });
-            }
-        };
-
-        // Load the Maps API script dynamically
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBC7TrnSJ6ZvaNUaspY6zbmOAbrz5PFF04&callback=initMap`;
-        script.async = true;
-        document.head.appendChild(script);
-    }, [organization]);
-
     if (!organization) {
         return <div>Loading organization...</div>;
     }
+
+    const position = [organization.latitude, organization.longitude];
 
     return (
         <section className="py-5">
@@ -65,7 +42,18 @@ const OrganizationDetails = () => {
                             Show Fields
                         </a>
                     </div>
-                    <div id="map" style={{ height: 200, width: 10000 }}></div>
+                    <div id="map" style={{height: 200,width:10000}}>                    
+                        <MapContainer center={position} zoom={15} scrollWheelZoom={false}>
+                            <TileLayer
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                attribution='Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
+                            />
+                            <Marker position={position}>
+                                <Popup>{organization.name}</Popup>
+                            </Marker>
+                        </MapContainer>
+                    </div>
+
                 </div>
             </div>
         </section>
