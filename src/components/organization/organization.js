@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import axios from 'axios';
 
 function OrganizationList() {
@@ -21,9 +22,10 @@ function OrganizationList() {
             <section>
                 <div className="container mt-4">
                     <hr />
-                    <a href="http://127.0.0.1:8000/organization/create/" className="btn btn-primary mb-2">
+                    <a className="btn btn-primary mb-2">
+                        <Link to="/organization/create" className="nav-link">
                         Create Organization
-                    </a>
+                    </Link></a>
                     <table className="table">
                         <thead>
                             <tr>
