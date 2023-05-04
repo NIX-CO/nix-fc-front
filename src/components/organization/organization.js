@@ -37,7 +37,11 @@ function OrganizationList() {
                         <tbody>
                             {organizations.map((organization) => (
                                 <tr key={organization.id}>
-                                    <td>{organization.name}</td>
+                                    {/* <td>{organization.name}</td> */}
+                                    <td><a
+                                            href={`http://127.0.0.1:8000/organization/${organization.id}`}
+                                            className="btn btn-primary"
+                                        >{organization.name}</a></td>
                                     <td>
                                         <img src={organization.image.url} width="100" height="100" />
                                     </td>
